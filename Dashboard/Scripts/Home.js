@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
-    $(".maskClass").maskMoney({ thousands: '.', decimal: ',', allowZero: true, precision: 3 })
 
+    $(".DataClass").mask("00/0000");
+   
 });
 function generate(data) {
     debugger
@@ -30,19 +31,29 @@ function generate(data) {
         yAxis: {
             type: 'value'
         },
-        serie:
+        legend: {
+            data: ['Recurso', 'Requisito','Balanço']
+        },
+        series:
 
             [
                 {
+                    data: lsttotal,
+                    type: 'line',
+                    name:'Balanço',
+                    areaStyle: {
+                        yAxisIndex: 1,
+                    }
+
+                },
+                {
                     data: LstRecurso,
+                    name:'Recurso',
                     type: 'bar'
                 },
                 {
                     data: lstRequisito,
-                    type: 'bar'
-                },
-                {
-                    data: lsttotal,
+                    name:'Requisito',
                     type: 'bar'
                 }
             ]
@@ -65,19 +76,19 @@ $("#btnCalcular").click(function () {
 
 
     var Listarecurso = [];
+    var Calculo = $("#TipoBalanco").val()
+    debugger
 
-    for (var i = 1; i < 13; i++) {
-        var count = i - 1;
-        var Recurso = $(".Recurso")[count].value;
-        var Requisito = $(".Requisito")[count].value;
-
+    for (var i = 0; i < $('.Recurso').length; i++) {
+        var Recurso = $(".Recurso")[i].value;
+        var Requisito = $(".Requisito")[i].value;
         Listarecurso.push({ Mes: i, Recurso: Recurso, Requisito: Requisito })
     }
 
 
     $.ajax({
         url: '/Home/Calc',
-        data: { Listarecurso },
+        data: { Listarecurso, Calculo },
         type: 'POST',
         success: function (data) {
 
@@ -90,4 +101,32 @@ $("#btnCalcular").click(function () {
             }
         }
     });
+});
+
+$("#btnGerar").click(function () {
+
+    var DataInicio = $("#DataInicio").val();
+    var DataFim = $("#DataFinal").val();
+
+    $.ajax({
+        url: '/Home/Data',
+        data: { DataI: DataInicio, DataF: DataFim },
+        type: 'POST',
+        success: function (data) {
+            var html = '';
+            for (var i = 0; i < data.list.length; i++) {
+                var item = data.list[i];
+                html += '<div class="col-md-2">' + item + '<input type="text" id="' + item + '" class="form-group-sm maskClass Recurso" style="margin-right:5px;" placeholder="Recurso" /><input type="text" id="' + item + '" class="form-group-sm maskClass Requisito" style="margin-right:5px; margin-top: 5px;" placeholder="Requisito" /></div>';
+            }
+
+            $('#meses').html(html)
+
+            $(".maskClass").maskMoney({ thousands: '.', decimal: ',', allowZero: true, precision: 3 })
+
+        }
+    });
+
+
+
+
 });

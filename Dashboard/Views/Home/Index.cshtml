@@ -12,27 +12,18 @@
     <h1>Dashboard - Balanço</h1>
     <p class="lead">Recurso X Requisito</p>
 
+    <p><a id="btnGerar" class="btn btn-primary btn-lg">Gerar &raquo;</a></p>
     <p><a id="btnCalcular" style="background-color: orangered; border-color: orangered;" class="btn btn-primary btn-lg">Calcular &raquo;</a></p>
-    <input type="text" id="PulodoGato" class="form-group-sm maskClass ReplicarRecurso" style="margin-right:5px;" placeholder="Replicar Recurso"/>
+    <select id="TipoBalanco" name="select">
+        <option value="1" selected >Balanço consumo</option>
+        <option value="2" >Balanço geração</option>
+        
+    </select>
+    <input type="text" id="DataInicio" class="form-group-sm  DataClass" style="margin-right:5px;" placeholder="Data Inicial" />
+    <input type="text" id="DataFinal" class="form-group-sm  DataClass" style="margin-right:5px;" placeholder="Data Final" />
+    <input type="text" id="PulodoGato" class="form-group-sm maskClass ReplicarRecurso" style="margin-right:5px;" placeholder="Replicar Recurso" />
     <input type="text" id="PulodoGatinho" class="form-group-sm maskClass ReplicarRequisito" style="margin-right:5px;" placeholder="Replicar Requisito" />
-    <div class="row col-md-12">
-        @{
-            for (int i = 1; i < 13; i++)
-            {
-                var data = Convert.ToDateTime($"01/{i}/{DateTime.Now.Year}");
-                if (i == 7)
-                {
-                    <div class="col-md-12">
-                    </div>  
-                }   
-                <div class="col-md-2">
-                    @data.ToString("MMMM")
-                    <input type="text" id="@i" class="form-group-sm maskClass Recurso" style="margin-right:5px;" placeholder="Recurso"/>
-                    <input type="text" id="@i" class="form-group-sm maskClass Requisito" style="margin-right:5px; margin-top: 5px;" placeholder="Requisito" />
-                </div>
-
-            }
-        }
+    <div id="meses" class="row col-md-12">
 
     </div>
 </div>
